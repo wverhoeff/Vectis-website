@@ -25,7 +25,7 @@ if (canvas && track && webglOK()) {
   scene.add(camera);
 
   const CYAN = new THREE.Color(0x00eeff);
-  const HOT = new THREE.Color(0x00eeff).multiplyScalar(2);
+  const HOT = new THREE.Color(0x00eeff).multiplyScalar(1.25);
   const TOP = LEVELS[LEVELS.length - 1];
 
   // ---- Background: slow flowing ribbons of light, attached to the camera.
@@ -49,7 +49,7 @@ if (canvas && track && webglOK()) {
         vec3 navy = vec3(.02,.06,.105), deep = vec3(.01,.16,.22), cyan = vec3(0.,.93,1.);
         float mask = smoothstep(1.25, .1, distance(vUv, vec2(.78,.42)));
         vec3 col = mix(navy, deep, f*.9*mask);
-        col += cyan * (ribbon*.30 + soft*.035) * mask;
+        col += cyan * (ribbon*.22 + soft*.03) * mask;
         col *= .75 + .25*smoothstep(0.,.6,vUv.y);
         gl_FragColor = vec4(pow(col, vec3(2.2)), 1.);
       }`,
@@ -93,7 +93,7 @@ if (canvas && track && webglOK()) {
   const { nodes, members } = buildFrame();
   const P = nodes.map(([x, y, z]) => new THREE.Vector3(x, y + MID, z));
   const thick = { column: 3.4, beam: 2.4, brace: 1.5 };
-  const tone = { column: new THREE.Color(0xc4e9f2), beam: new THREE.Color(0x7fb9cb), brace: new THREE.Color(0x3f7f95) };
+  const tone = { column: new THREE.Color(0x86bfcf), beam: new THREE.Color(0x5f9cb0), brace: new THREE.Color(0x316a7e) };
   const bars = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ fog: true }), members.length);
   const up = new THREE.Vector3(0, 1, 0), m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), v = new THREE.Vector3(), sc = new THREE.Vector3();
   members.forEach((m, i) => {
@@ -129,7 +129,7 @@ if (canvas && track && webglOK()) {
   const slab = new THREE.Group();
   const slabFill = new THREE.Mesh(new THREE.PlaneGeometry(320, 240), new THREE.MeshBasicMaterial({ color: CYAN, transparent: true, opacity: .1, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
   slabFill.rotation.x = -Math.PI / 2; slab.add(slabFill);
-  const edgeMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0x00eeff).multiplyScalar(2.6), toneMapped: false });
+  const edgeMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0x00eeff).multiplyScalar(1.5), toneMapped: false });
   for (const [w, d, x, z] of [[320, 2.4, 0, -120], [320, 2.4, 0, 120], [2.4, 240, -160, 0], [2.4, 240, 160, 0]]) {
     const e = new THREE.Mesh(new THREE.BoxGeometry(w, 2.4, d), edgeMat); e.position.set(x, 0, z); slab.add(e);
   }
@@ -139,7 +139,7 @@ if (canvas && track && webglOK()) {
   const links = nodes.map(() => []);
   members.forEach((m, i) => { links[m.a].push(i); links[m.b].push(i); });
   const PULSES = mobile.matches ? 14 : 26;
-  const pulseMesh = new THREE.InstancedMesh(new THREE.SphereGeometry(2.6, 10, 8), new THREE.MeshBasicMaterial({ color: new THREE.Color(0x9ffcff).multiplyScalar(3), toneMapped: false }), PULSES);
+  const pulseMesh = new THREE.InstancedMesh(new THREE.SphereGeometry(2.6, 10, 8), new THREE.MeshBasicMaterial({ color: new THREE.Color(0x9ffcff).multiplyScalar(1.7), toneMapped: false }), PULSES);
   scene.add(pulseMesh);
   const pulses = Array.from({ length: PULSES }, () => spawn());
   function spawn() {
@@ -177,9 +177,11 @@ if (canvas && track && webglOK()) {
   scene.add(dust);
 
   // ---- Post: bloom gives the light its glow.
-  const composer = new EffectComposer(renderer);
+  // Multisampled target keeps edges smooth through the glow pass.
+  const target = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType, samples: renderer.capabilities.isWebGL2 ? 4 : 0 });
+  const composer = new EffectComposer(renderer, target);
   composer.addPass(new RenderPass(scene, camera));
-  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), .85, .5, .82);
+  const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), .5, .42, .86);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
 
@@ -203,12 +205,12 @@ if (canvas && track && webglOK()) {
   function watch(dt) {
     if (lowPower || sampled > 240) return;
     sampled++; if (dt > 34) slowFrames++;
-    if (sampled > 45 && slowFrames / sampled > .5) { lowPower = true; renderer.setPixelRatio(1); renderer.setSize(w, h, false); dust.visible = false; }
+    if (sampled > 45 && slowFrames / sampled > .5) { lowPower = true; resize(); dust.visible = false; }
   }
   let w = 0, h = 0, clock = 0, last = 0, raf = null, s = 0, sSmooth = 0, px = 0, py = 0, pxT = 0, pyT = 0, slabY = 0;
   function resize() {
     w = innerWidth; h = innerHeight;
-    const dpr = Math.min(devicePixelRatio || 1, mobile.matches ? 1.25 : 1.5);
+    const dpr = Math.min(devicePixelRatio || 1, lowPower ? 1.25 : mobile.matches ? 1.75 : 2);
     renderer.setPixelRatio(dpr); renderer.setSize(w, h, false);
     composer.setPixelRatio(dpr); composer.setSize(w, h);
     bloom.setSize(w * dpr / 2, h * dpr / 2);
@@ -244,12 +246,12 @@ if (canvas && track && webglOK()) {
     slabY += (target - slabY) * (reduce.matches ? 1 : 1 - Math.exp(-dt / 160));
     const standing = reduce.matches ? 1 : Math.min(1, Math.max(0, (clock - buildEnd + 400) / 800));
     slab.position.y = slabY; slab.scale.setScalar(.6 + .4 * standing); slab.visible = standing > 0;
-    slabFill.material.opacity = .1 * standing;
+    slabFill.material.opacity = .065 * standing;
 
     // Joints near the slab flare; beams on that level turn cyan.
     for (let i = 0; i < P.length; i++) {
       const d = Math.abs(P[i].y - slabY), k = Math.max(0, 1 - d / 45) * standing;
-      jointCol[i * 3] = .02 + k * .3; jointCol[i * 3 + 1] = .2 + k * 2.4; jointCol[i * 3 + 2] = .26 + k * 2.8;
+      jointCol[i * 3] = .02 + k * .2; jointCol[i * 3 + 1] = .16 + k * 1.5; jointCol[i * 3 + 2] = .2 + k * 1.8;
     }
     jointGeo.attributes.color.needsUpdate = true;
     members.forEach((m, i) => {
