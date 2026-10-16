@@ -22,7 +22,6 @@ const canonical = site.url ? new URL(Astro.url.pathname, site.url).href : undefi
     <meta property="og:image" content={site.url ? `${site.url}/assets/vectis-wordmark.png` : '/assets/vectis-wordmark.png'} />
     <meta property="og:image:alt" content="Vectis" />
     <title>{title}</title>
-    <script is:inline>document.documentElement.classList.add('js')</script>
   </head>
   <body><a class="skip-link" href="#main">Skip to content</a><slot /></body>
 </html>

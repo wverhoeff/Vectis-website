@@ -1,12 +1,11 @@
 ---
 import Page from '../layouts/Page.astro';
-import Structure from '../components/Structure.astro';
+import HeroFrame from '../components/HeroFrame.astro';
 import { site } from '../config';
-// Read top to bottom, foundation first: the plane in the frame rises with them.
 const capabilities = [
-  { place:'The foundation', title:'Strategy and direction', description:'Understand where AI can make a difference in your organisation. Develop the strategy, business case and policies to put it into practice.', topics:'AI strategy, business cases, policies and governance.' },
-  { place:'The structure', title:'Tools and implementation', description:'Put AI to work in the context of your business. Develop knowledge bases, tools and workflows that support the work your people already do.', topics:'Knowledge bases, workflow development, AI implementation.' },
-  { place:'The expression', title:'Learning and adoption', description:'Build competency within your organisation through learning tailored to your industry, workflows and tools. Help people understand how to use AI in their everyday work.', topics:'Tailored learning, staff development, practical adoption.' },
+  { title:'Strategy and direction', description:'Understand where AI can make a difference in your organisation. Develop the strategy, business case and policies to put it into practice.', topics:'AI strategy, business cases, policies and governance.' },
+  { title:'Tools and implementation', description:'Put AI to work in the context of your business. Develop knowledge bases, tools and workflows that support the work your people already do.', topics:'Knowledge bases, workflow development, AI implementation.' },
+  { title:'Learning and adoption', description:'Build competency within your organisation through learning tailored to your industry, workflows and tools. Help people understand how to use AI in their everyday work.', topics:'Tailored learning, staff development, practical adoption.' },
 ];
 ---
 <Page>
@@ -15,32 +14,30 @@ const capabilities = [
     <nav aria-label="Main navigation"><a href="#capabilities">Capabilities</a><a href="#approach">Approach</a>{site.contactEmail && <a href="#contact">Contact</a>}</nav>
   </header>
   <main id="main">
-    <div class="opening">
-      <div class="wrap">
-        <h1 id="hero-title" class="hero-title"><span class="line">The capability to shape</span> <span class="line">what comes next.</span></h1>
-        <div class="story">
-          <div class="story-copy">
-            <section class="hero" aria-labelledby="hero-title">
-              <p class="lede">AI consultancy for civil, structural and construction engineering firms.</p>
-              <a class="primary-link" href="#capabilities">Explore our capabilities</a>
-            </section>
-            <section class="capabilities" id="capabilities" aria-labelledby="capability-title">
-              <h2 id="capability-title" data-reveal>Expertise in the foundation.<br/>Invention in the expression.</h2>
-              <ol class="levels">
-                {capabilities.map((item, i) => (
-                  <li class="level" data-level={i} data-place={item.place} tabindex="0" aria-labelledby={`level-${i}`}>
-                    <h3 id={`level-${i}`} data-reveal>{item.title}</h3>
-                    <p data-reveal style="--d:80ms">{item.description}</p>
-                    <p class="level-topics" data-reveal style="--d:160ms">{item.topics}</p>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          </div>
-          <div class="story-visual"><Structure/></div>
-        </div>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title">The capability to shape what comes next.</h1>
+        <p class="lede">AI consultancy for civil, structural and construction engineering firms.</p>
+        <a class="primary-link" href="#capabilities">Explore our capabilities</a>
       </div>
-    </div>
+      <HeroFrame/>
+    </section>
+    <section class="capabilities" id="capabilities" aria-labelledby="capability-title">
+      <div class="wrap">
+        <h2 id="capability-title" data-reveal>Expertise in the foundation.<br/>Invention in the expression.</h2>
+        <ol class="levels">
+          {capabilities.map((item, i) => (
+            <li class="level">
+              <h3 data-reveal>{item.title}</h3>
+              <div>
+                <p data-reveal style="--d:80ms">{item.description}</p>
+                <p class="level-topics" data-reveal style="--d:160ms">{item.topics}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
 
     <section class="agency" aria-labelledby="agency-title">
       <div class="wrap agency-grid">
