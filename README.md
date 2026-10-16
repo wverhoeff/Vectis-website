@@ -87,3 +87,26 @@ Before launch, check the homepage and custom 404 on `pages.dev`, the animation a
 Local build/browser checks do not prove the GitHub integration, Cloudflare build or domain connection has completed. Those need verification after the project is created in Cloudflare.
 
 References: [Cloudflare's Astro guide](https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/), [Git integration](https://developers.cloudflare.com/pages/configuration/git-integration/), [custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/).
+
+## Rolling back
+
+Each released version of the homepage is kept as a branch on GitHub:
+
+| Branch | Version |
+| --- | --- |
+| `rollback/v1-original` | Original site |
+| `rollback/v2-frame-story` | First redesign, scroll-driven frame |
+| `rollback/v3-canvas-hero` | Canvas hero that builds itself |
+
+**Fastest (no code):** in Cloudflare Pages, open the project's Deployments list, find an earlier production deployment and choose **Rollback to this deployment**. The site switches back straight away. The next push to `main` deploys again as normal.
+
+**Through GitHub:** restore `main` to an earlier version with a new commit, so nothing is lost:
+
+```bash
+git checkout main
+git checkout rollback/v1-original -- .
+git commit -m "Roll back homepage to v1-original"
+git push origin main
+```
+
+Cloudflare rebuilds from `main` and publishes that version.
