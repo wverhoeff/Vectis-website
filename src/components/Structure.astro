@@ -1,0 +1,48 @@
+---
+type Point = [number, number, number];
+type Shape = { points: Point[]; closed?: boolean; opacity?: string; cyan?: boolean };
+const yaw = 0.64;
+const project = ([x, y, z]: Point) => [405 + (x * Math.cos(yaw) + z * Math.sin(yaw)) * 1.12, 505 - y * 1.04 + (z * Math.cos(yaw) - x * Math.sin(yaw)) * .42];
+const path = (s: Shape) => 'M' + s.points.map(p => project(p).map(n => n.toFixed(2)).join(',')).join('L') + (s.closed ? 'Z' : '');
+const points = (s: Shape) => s.points.map(p => p.join(',')).join(';');
+const ground: Shape[] = [], floors: Shape[] = [], frame: Shape[] = [], bracing: Shape[] = [], dimension: Shape[] = [];
+const levels = [0,60,120,180,240,300,360], xs = [-132,-44,44,132], zs = [-100,0,100];
+for(let x=-350;x<=350;x+=50) ground.push({points:[[x,-4,-280],[x,-4,280]]});
+for(let z=-250;z<=250;z+=50) ground.push({points:[[-360,-4,z],[360,-4,z]]});
+for(const y of levels) {
+  floors.push({points:[[-132,y,-100],[132,y,-100],[132,y,100],[-132,y,100]],closed:true});
+  for(const x of xs.slice(1,-1)) frame.push({points:[[x,y,-100],[x,y,100]],opacity:'.29'});
+  frame.push({points:[[-132,y,0],[132,y,0]],opacity:'.29'});
+}
+for(const x of xs) for(const z of zs) frame.push({points:[[x,0,z],[x,360,z]]});
+for(const z of [-100,100]) for(const y of levels.slice(0,-1)) for(let i=0;i<3;i++) bracing.push({points:[[xs[i],y,z],[xs[i+1],y+60,z]]});
+for(const y of [0,120,240]) bracing.push({points:[[-132,y,-100],[-132,y+120,100]]});
+frame.push({points:[[-145,370,-115],[150,370,-115],[150,370,115],[-145,370,115]],closed:true,cyan:true});
+for(const x of xs) frame.push({points:[[x,360,-100],[x,370,-100]]});
+dimension.push({points:[[192,0,110],[192,370,110]]});
+for(const y of levels) dimension.push({points:[[182,y,110],[202,y,110]]});
+dimension.push({points:[[-132,0,150],[132,0,150]]});
+for(const x of xs) dimension.push({points:[[x,0,142],[x,0,158]]});
+const scan: Shape = {points:[[-145,168,-115],[150,168,-115],[150,168,115],[-145,168,115]],closed:true};
+const nodes: Point[] = xs.flatMap(x => [0,120,240,360].map(y => [x,y,100] as Point));
+const groups = [{id:'ground',shapes:ground},{id:'floors',shapes:floors},{id:'frame',shapes:frame},{id:'bracing',shapes:bracing},{id:'dimension',shapes:dimension}];
+---
+<figure class="structural-visual">
+  <div class="scene-topline" aria-hidden="true"><span>STRUCTURAL STUDY</span><span>V / 01</span></div>
+  <svg id="structure" viewBox="0 0 800 720" role="img" aria-labelledby="structure-title structure-description">
+    <title id="structure-title">An architectural frame in motion</title>
+    <desc id="structure-description">An illustrative structural frame, with a cyan plane moving through its levels.</desc>
+    <defs>
+      <radialGradient id="scene-glow"><stop stop-color="#00eeff" stop-opacity=".08"/><stop offset="1" stop-color="#00eeff" stop-opacity="0"/></radialGradient>
+      <linearGradient id="scan-fill" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#00eeff" stop-opacity=".2"/><stop offset="1" stop-color="#00eeff" stop-opacity=".025"/></linearGradient>
+    </defs>
+    <ellipse cx="405" cy="390" rx="340" ry="300" fill="url(#scene-glow)"/>
+    {groups.map(g => <g id={g.id}>{g.shapes.map(s => <path data-points={points(s)} data-closed={String(!!s.closed)} d={path(s)} style={s.cyan ? 'stroke:#00eeff;stroke-opacity:.8' : s.opacity ? `stroke-opacity:${s.opacity}` : undefined}/>)}</g>)}
+    <g id="scan"><path data-points={points(scan)} data-closed="true" d={path(scan)}/></g>
+    <g id="nodes">{nodes.map(p => <circle data-point={p.join(',')} cx={project(p)[0]} cy={project(p)[1]} r="1.7"/>)}</g>
+    <g class="drawing-labels" aria-hidden="true"><text x="614" y="165">AXONOMETRIC</text><text x="614" y="182">FRAME / 01</text><text x="89" y="543">X</text><text x="640" y="550">Y</text><text x="403" y="85">Z</text></g>
+    <path d="M95 95h14m-7-7v14M687 593h14m-7-7v14" fill="none" stroke="#00eeff" stroke-opacity=".65" aria-hidden="true"/>
+  </svg>
+  <figcaption class="scene-caption"><span><span class="small-cross" aria-hidden="true">+</span> ENGINEERING / IN PERSPECTIVE</span><button id="motion-toggle" type="button" hidden>Pause motion <span aria-hidden="true">Ⅱ</span></button></figcaption>
+</figure>
+<script src="../scripts/motion.js"></script>
