@@ -19,5 +19,5 @@ export const site = {
   url: normaliseSiteUrl(rawSiteUrl),
   contactEmail,
   contactHref: contactEmail ? `mailto:${encodeURIComponent(contactEmail)}` : undefined,
-  description: 'Vectis helps civil, structural and construction engineering firms gain the understanding and capability to control their future proactively.',
+  description: 'Vectis helps construction sector companies gain the understanding and capability to control their future proactively.',
 };

@@ -3,30 +3,29 @@ import Page from '../layouts/Page.astro';
 import { site } from '../config';
 // Read foundation first: the camera climbs the building with them.
 const capabilities = [
-  { place:'The foundation', title:'Strategy and direction', description:'Understand where AI can make a difference in your organisation. Develop the strategy, business case and policies to put it into practice.', topics:['AI strategy','Business cases','Policies and governance'] },
-  { place:'The structure', title:'Tools and implementation', description:'Put AI to work in the context of your business. Develop knowledge bases, tools and workflows that support the work your people already do.', topics:['Knowledge bases','Workflow development','AI implementation'] },
-  { place:'The expression', title:'Learning and adoption', description:'Build competency within your organisation through learning tailored to your industry, workflows and tools. Help people understand how to use AI in their everyday work.', topics:['Tailored learning','Staff development','Practical adoption'] },
+  { place:'The foundation', title:'Strategy and direction', description:'Get clear advice on where to start with AI, which tools to use and how to use them. Develop a strategy, business case and policies around your priorities, with a focus on practical value early on.', topics:['AI strategy','Business cases','Policies and governance'] },
+  { place:'The structure', title:'Tools and implementation', description:'Use AI to augment the work and workflows of your people. Build knowledge bases and tools around your business, starting where they can make a useful difference quickly and measuring the value they bring.', topics:['Knowledge bases','Workflow development','AI implementation'] },
+  { place:'The expression', title:'Learning and adoption', description:'Build competency within your organisation through learning tailored to your industry, workflows and tools. Help people understand how to use AI productively in their everyday work.', topics:['Tailored learning','Staff development','Practical adoption'] },
 ];
 ---
 <Page>
   <canvas id="scene" aria-hidden="true"></canvas>
   <div class="grain" aria-hidden="true"></div>
-  <header class="site-header" id="top">
+  <header class="site-header">
     <div class="nav-pill">
       <a class="brand" href="#top" aria-label="Vectis home"><img src="/assets/vectis-wordmark.png" width="2044" height="481" alt="Vectis"/></a>
-      <nav aria-label="Main navigation"><a href="#capabilities">Capabilities</a><a href="#approach">Approach</a>{site.contactEmail && <a href="#contact">Contact</a>}</nav>
-      {site.contactEmail ? <a class="nav-cta" href="#contact">Talk to us</a> : <a class="nav-cta" href="#capabilities">Explore</a>}
+      <nav aria-label="Main navigation"><a href="#capabilities">Capabilities</a><a href="#approach">Approach</a></nav>
+      {site.contactEmail && <a class="nav-cta" href="#contact">Talk to us</a>}
     </div>
   </header>
   <main id="main">
-    <div class="track">
+    <div class="track" id="top">
       <section class="hero stage" aria-labelledby="hero-title">
         <div class="wrap stage-inner">
-          <p class="kicker" data-reveal>AI consultancy for engineering firms</p>
+          <p class="kicker" data-reveal>AI consultancy for the construction sector</p>
           <h1 id="hero-title" data-reveal style="--d:80ms">The capability to shape <span class="glow">what comes next.</span></h1>
-          <p class="lede" data-reveal style="--d:160ms">Vectis helps civil, structural and construction engineering firms gain the understanding and capability to control their future proactively.</p>
+          <p class="lede" data-reveal style="--d:160ms">Vectis helps construction sector companies gain the understanding and capability to control their future proactively.</p>
           <div class="actions" data-reveal style="--d:240ms">
-            <a class="btn btn-primary" href="#capabilities">Explore our capabilities</a>
             <a class="btn btn-ghost" href="#approach">Our approach</a>
           </div>
         </div>
@@ -50,8 +49,9 @@ const capabilities = [
 
     <section class="agency" aria-labelledby="agency-title">
       <div class="wrap">
-        <h2 id="agency-title" data-reveal>Agency at <span class="glow">the centre.</span></h2>
+        <h2 id="agency-title" data-reveal>People at <span class="glow">the centre.</span></h2>
         <p class="statement" data-reveal style="--d:90ms">Expertise in the foundation. Invention in the expression.</p>
+        <p class="agency-copy" data-reveal style="--d:160ms">AI supports your people's work. Your people stay in control of the decisions.</p>
       </div>
     </section>
 
@@ -60,7 +60,7 @@ const capabilities = [
         <div>
           <h2 id="approach-title" data-reveal>Building competency within your organisation.</h2>
           <p data-reveal style="--d:80ms">Developing the tools is part of the process. Helping your people use them is what brings that work into everyday practice.</p>
-          <p data-reveal style="--d:160ms">Our approach brings AI implementation together with specialised learning, grounded in 18 years of experience in education.</p>
+          <p data-reveal style="--d:160ms">Our approach brings AI implementation together with specialised learning, backed by over 15 years of experience in education.</p>
         </div>
         <div class="context" role="img" aria-label="Learning built from your industry, your workflows and your tools, centred on your people.">
           <span data-reveal>Your industry</span>

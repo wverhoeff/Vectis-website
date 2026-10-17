@@ -6,6 +6,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+#capabilities,#approach,#contact{scroll-margin-top:96px}
 body{margin:0;background:var(--navy);color:var(--ice);font-family:Arial,Helvetica,sans-serif;font-size:clamp(17px,1.15vw,19px);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}
 img{display:block;max-width:100%;height:auto}
@@ -66,14 +67,16 @@ body:before{content:"";position:fixed;inset:0;z-index:-3;background:radial-gradi
 .agency{padding:clamp(140px,18vw,260px) 0;text-align:center}
 .agency h2{font-size:clamp(52px,8vw,140px);line-height:.95;letter-spacing:-.05em}
 .statement{margin-top:28px;font-size:clamp(20px,2vw,30px);color:var(--soft)}
+.agency-copy{max-width:38em;margin:20px auto 0;color:var(--soft)}
 .approach{padding:clamp(80px,10vw,160px) 0}
 .approach-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,7vw,120px);align-items:center;padding-top:clamp(48px,6vw,96px);padding-bottom:clamp(48px,6vw,96px);border-radius:36px;background:linear-gradient(150deg,rgba(14,44,64,.7),rgba(5,15,26,.4));border:1px solid rgba(160,230,245,.12);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .approach h2{font-size:clamp(34px,3.4vw,58px);line-height:1.03;letter-spacing:-.035em;margin-bottom:28px}
 .approach p{color:var(--soft);max-width:30em}
 .approach p+p{margin-top:14px}
 .context{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-.context span{font-size:clamp(28px,3vw,48px);font-weight:700;letter-spacing:-.03em;line-height:1.05;color:rgba(241,250,255,.32)}
-.context strong{margin-top:18px;padding:16px 28px;border-radius:999px;font-size:clamp(26px,2.6vw,42px);letter-spacing:-.03em;background:var(--cyan);color:var(--navy);box-shadow:0 0 60px -6px rgba(0,238,255,.7)}
+.context span,.context strong{font-size:clamp(28px,3vw,48px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.context span{color:var(--soft)}
+.context strong{color:var(--cyan)}
 .contact{padding:clamp(80px,10vw,160px) 0;text-align:center}
 .contact h2{font-size:clamp(44px,6vw,100px);letter-spacing:-.045em;margin-bottom:32px}
 .contact-email{font-size:clamp(17px,1.6vw,22px);min-height:64px;padding:0 36px;overflow-wrap:anywhere}
@@ -98,15 +101,18 @@ body:before{content:"";position:fixed;inset:0;z-index:-3;background:radial-gradi
   .site-header{top:10px}
   .nav-pill{padding:8px 8px 8px 16px;gap:8px}
   .brand img{width:92px}
-  .nav-pill nav{display:none}
+  .nav-pill nav{gap:0}
+  .nav-pill nav a{font-size:12px;padding:0 8px}
   .nav-cta{margin-left:auto}
+  .nav-pill:has(.nav-cta) nav{display:none}
   /* Phones: the frame sits in the top half; copy sits low over a soft shade. */
   .stage{align-items:flex-end;padding-bottom:max(36px,6vh)}
-  .hero .stage-inner{padding-top:0}
+  .hero .stage-inner{padding-top:112px}
   .stage-inner{position:relative}
   .hero:after{content:"";position:absolute;inset:auto 0 0 0;height:72%;background:linear-gradient(180deg,transparent,rgba(5,15,26,.88) 45%);z-index:-1}
   .hero h1{font-size:clamp(40px,11vw,64px)}
-  .kicker{margin-bottom:18px;font-size:13px}
+  .kicker{margin-bottom:18px;font-size:13px;border-radius:16px}
+  .kicker:before{flex-shrink:0}
   .lede{margin-top:18px}
   .actions{margin-top:24px}
   .actions .btn{flex:1 1 auto}

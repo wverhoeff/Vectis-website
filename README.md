@@ -58,6 +58,14 @@ Example with a test address for local checking only:
 CONTACT_EMAIL=hello@example.com npm run build
 ```
 
+### Pending enquiry setup
+
+The proposed public address is `info@vectisadvisory.co.nz`. It has not yet been set up or verified, so leave `CONTACT_EMAIL` unset until the mailbox or forwarding destination can receive enquiries. Once verified, set `CONTACT_EMAIL` in the existing Cloudflare project's build environment and redeploy to show the contact section.
+
+The current contact section opens the visitor's email application. An enquiry form still needs a delivery service, a server-side submission handler and server-side verification of Cloudflare Turnstile tokens before it can go live. Do not display a form that cannot deliver submissions.
+
+Anonymised case studies can follow once approved content is supplied. No client names, invented results or unconfirmed social accounts should be published.
+
 ## What is included
 
 - Responsive homepage with the deck's core messaging.
