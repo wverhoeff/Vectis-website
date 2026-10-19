@@ -1,8 +1,8 @@
-// Cloudflare Pages Function: POST /api/contact
+// Contact form handler: POST /api/contact (called from worker/index.js)
 // Checks the enquiry, verifies the Turnstile anti-bot token, then emails it
 // to CONTACT_TO through Resend. Secrets live in Cloudflare, never in the page.
 //
-// Environment (Cloudflare Pages > Settings > Variables and Secrets):
+// Environment (Cloudflare > Workers & Pages > vectis-website > Settings > Variables and Secrets):
 //   RESEND_API_KEY        secret   Resend API key
 //   TURNSTILE_SECRET_KEY  secret   Turnstile widget secret
 //   CONTACT_TO            text     where enquiries go, e.g. mark@vectisadvisory.co.nz

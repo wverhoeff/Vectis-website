@@ -1,0 +1,14 @@
+{
+  // Cloudflare Worker for vectisadvisory.co.nz: static site plus the contact form.
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "vectis-website",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true }
+}

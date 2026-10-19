@@ -45,13 +45,13 @@ After connection, pushes to `main` deploy production. Other branches and pull re
 
 ## Contact form
 
-The **Inquire** button and the Contact link open a form at the bottom of the homepage. It posts to a Cloudflare Pages Function (`functions/api/contact.js`) that checks the fields, blocks bots with Cloudflare Turnstile and a hidden trap field, then emails the enquiry through [Resend](https://resend.com). Mark's address and the API keys live only in Cloudflare settings, never in the page. Replies go straight to the sender (reply-to).
+The **Inquire** button and the Contact link open a form at the bottom of the homepage. It posts to `/api/contact`, handled by the site's Cloudflare Worker (`worker/index.js` and `worker/contact.js`, configured in `wrangler.jsonc`). The Worker serves the built site from `dist` and runs only for `/api/*`. The handler that checks the fields, blocks bots with Cloudflare Turnstile and a hidden trap field, then emails the enquiry through [Resend](https://resend.com). Mark's address and the API keys live only in Cloudflare settings, never in the page. Replies go straight to the sender (reply-to).
 
 ### One-off setup
 
 1. **Resend:** create an account, add the domain `vectisadvisory.co.nz` and add the DNS records it shows in Cloudflare DNS (keep existing MX records). Wait for it to show as verified, then create an API key with sending access.
 2. **Turnstile:** in Cloudflare, open **Turnstile**, add a widget for `vectisadvisory.co.nz` (Managed mode). Copy the site key and the secret key.
-3. **Pages settings:** in the Pages project, open **Settings > Variables and Secrets** for Production and add:
+3. **Worker settings:** in **Workers & Pages > vectis-website > Settings > Variables and secrets** (Production), add the runtime values below. `PUBLIC_TURNSTILE_SITE_KEY` is a build value: add it under **Settings > Build > Variables and secrets**.
 
 | Name | Type | Value |
 | --- | --- | --- |
