@@ -1,5 +1,6 @@
 const rawSiteUrl = (process.env.SITE_URL || 'https://vectisadvisory.co.nz').trim();
-const turnstileSiteKey = (process.env.PUBLIC_TURNSTILE_SITE_KEY || '').trim();
+// Public Turnstile site key (safe to publish). Override with PUBLIC_TURNSTILE_SITE_KEY if it changes.
+const turnstileSiteKey = (process.env.PUBLIC_TURNSTILE_SITE_KEY || '0x4AAAAAAFa8_dTTZ4EHJMlG').trim();
 
 function normaliseSiteUrl(value: string) {
   if (!value) return undefined;
