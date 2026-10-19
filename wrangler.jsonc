@@ -4,6 +4,8 @@
   "name": "vectis-website",
   "main": "worker/index.js",
   "compatibility_date": "2026-10-01",
+  // Build the Astro site before every deploy (Cloudflare's build command is empty).
+  "build": { "command": "npm run build" },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
