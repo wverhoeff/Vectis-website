@@ -43,26 +43,38 @@ Use the Pages **Custom domains** flow; adding only a DNS record does not associa
 
 After connection, pushes to `main` deploy production. Other branches and pull requests can generate preview deployments. No GitHub Actions deployment workflow or Cloudflare token is needed for this integration.
 
+## Contact form
+
+The **Inquire** button and the Contact link open a form at the bottom of the homepage. It posts to `/api/contact`, handled by the site's Cloudflare Worker (`worker/index.js` and `worker/contact.js`, configured in `wrangler.jsonc`). The Worker serves the built site from `dist` and runs only for `/api/*`. The handler that checks the fields, blocks bots with Cloudflare Turnstile and a hidden trap field, then emails the enquiry through [Resend](https://resend.com). Mark's address and the API keys live only in Cloudflare settings, never in the page. Replies go straight to the sender (reply-to).
+
+### One-off setup
+
+1. **Resend:** create an account, add the domain `vectisadvisory.co.nz` and add the DNS records it shows in Cloudflare DNS (keep existing MX records). Wait for it to show as verified, then create an API key with sending access.
+2. **Turnstile:** in Cloudflare, open **Turnstile**, add a widget for `vectisadvisory.co.nz` (Managed mode). Copy the site key and the secret key.
+3. **Worker settings:** in **Workers & Pages > vectis-website > Settings > Variables and secrets** (Production), add the runtime values below. `PUBLIC_TURNSTILE_SITE_KEY` is a build value: add it under **Settings > Build > Variables and secrets**.
+
+| Name | Type | Value |
+| --- | --- | --- |
+| `RESEND_API_KEY` | Secret | the Resend API key |
+| `TURNSTILE_SECRET_KEY` | Secret | the Turnstile secret key |
+| `CONTACT_TO` | Text | `mark@vectisadvisory.co.nz` (comma-separate to add more) |
+| `CONTACT_FROM` | Text | `Vectis website <website@vectisadvisory.co.nz>` |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Text | the Turnstile site key (used at build time) |
+
+4. Redeploy. Send a test enquiry and check it arrives.
+
+Until the Resend values are set, the form shows "The form is not available right now". Without the Turnstile values it still works, protected only by the hidden trap field.
+
 ## Public configuration
 
 | Variable | Default / effect |
 | --- | --- |
 | `SITE_URL` | `https://vectisadvisory.co.nz`. Used for canonical links, social metadata and the sitemap. Must be an HTTPS origin without a path. |
-| `CONTACT_EMAIL` | Unset. When provided, adds a Contact link and an email section. No address is invented or displayed until one is supplied. |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Unset. When provided, shows the Turnstile check on the contact form. |
 
-These are public values, not secrets. Add them to the Pages project's build environment and redeploy after changing them. For local development, export them in your shell; `.env.example` documents the expected format. The code uses `process.env`, so a `.env` file alone is not a configuration loader.
+### Enquiries
 
-Example with a test address for local checking only:
-
-```sh
-CONTACT_EMAIL=hello@example.com npm run build
-```
-
-### Pending enquiry setup
-
-The proposed public address is `info@vectisadvisory.co.nz`. It has not yet been set up or verified, so leave `CONTACT_EMAIL` unset until the mailbox or forwarding destination can receive enquiries. Once verified, set `CONTACT_EMAIL` in the existing Cloudflare project's build environment and redeploy to show the contact section.
-
-The current contact section opens the visitor's email application. An enquiry form still needs a delivery service, a server-side submission handler and server-side verification of Cloudflare Turnstile tokens before it can go live. Do not display a form that cannot deliver submissions.
+Enquiries come through the contact form (see **Contact form** above) and are delivered to `CONTACT_TO`, currently Mark's address. A separate public address such as `info@vectisadvisory.co.nz` has been proposed but is not set up; nothing on the page shows an address.
 
 Anonymised case studies can follow once approved content is supplied. No client names, invented results or unconfirmed social accounts should be published.
 

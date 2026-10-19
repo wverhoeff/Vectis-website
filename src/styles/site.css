@@ -77,9 +77,33 @@ body:before{content:"";position:fixed;inset:0;z-index:-3;background:radial-gradi
 .context span,.context strong{font-size:clamp(28px,3vw,48px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
 .context span{color:var(--soft)}
 .context strong{color:var(--cyan)}
-.contact{padding:clamp(80px,10vw,160px) 0;text-align:center}
-.contact h2{font-size:clamp(44px,6vw,100px);letter-spacing:-.045em;margin-bottom:32px}
-.contact-email{font-size:clamp(17px,1.6vw,22px);min-height:64px;padding:0 36px;overflow-wrap:anywhere}
+.contact{padding:clamp(80px,10vw,160px) 0}
+.contact-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,96px);align-items:start}
+.contact-intro{position:sticky;top:120px}
+.contact h2{font-size:clamp(40px,4.6vw,76px);line-height:1;letter-spacing:-.045em;margin-bottom:24px}
+.contact-intro p{color:var(--soft);max-width:28em}
+.contact-form{padding:clamp(24px,3vw,44px);border-radius:28px;background:linear-gradient(160deg,rgba(14,44,64,.78),rgba(7,27,44,.6));border:1px solid rgba(160,230,245,.16);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);box-shadow:0 30px 80px -30px rgba(0,0,0,.6)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.field{margin-bottom:6px}
+.field label{display:block;font-size:15px;font-weight:700;margin-bottom:8px}
+.optional{font-weight:400;color:var(--soft)}
+.field input,.field select,.field textarea{width:100%;min-height:52px;padding:14px 16px;border-radius:14px;border:1px solid rgba(160,230,245,.22);background:rgba(5,15,26,.55);color:var(--ice);font:inherit;font-size:16px;transition:border-color .2s,box-shadow .2s,background .2s}
+.field textarea{resize:vertical;min-height:140px;line-height:1.5}
+.field select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#9fdcea 50%),linear-gradient(135deg,#9fdcea 50%,transparent 50%);background-position:calc(100% - 22px) 23px,calc(100% - 16px) 23px;background-size:6px 6px;background-repeat:no-repeat;padding-right:44px}
+.field select option{background:#071b2c;color:var(--ice)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 4px rgba(0,238,255,.16);background:rgba(5,15,26,.75)}
+.field [aria-invalid]{border-color:#ff8a8a}
+.field-error{min-height:22px;margin-top:6px;font-size:14px;color:#ffb3b3}
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.cf-turnstile{margin:8px 0 18px}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin-top:10px}
+.form-foot .btn{min-width:200px;cursor:pointer;border:0}
+.form-foot .btn:disabled{opacity:.7;cursor:progress;transform:none}
+.privacy{font-size:14px;color:var(--soft)}
+.form-status{margin-top:18px;font-size:16px}
+.form-status:empty{display:none}
+.form-status.is-success{padding:14px 18px;border-radius:14px;background:rgba(0,238,255,.1);border:1px solid rgba(0,238,255,.35);color:#c9fbff}
+.form-status.is-error{padding:14px 18px;border-radius:14px;background:rgba(255,120,120,.1);border:1px solid rgba(255,140,140,.35);color:#ffd0d0}
 
 .site-footer{padding:clamp(80px,10vw,160px) 0 32px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.35))}
 .footer-mark{width:100%;opacity:.95;filter:drop-shadow(0 0 40px rgba(0,238,255,.25))}
@@ -119,6 +143,9 @@ body:before{content:"";position:fixed;inset:0;z-index:-3;background:radial-gradi
   .scroll-cue{display:none}
   .panel{max-width:none;background:rgba(7,27,44,.86)}
   .approach-grid{grid-template-columns:1fr;border-radius:28px}
+  .contact-grid,.field-row{grid-template-columns:1fr}
+  .contact-intro{position:static}
+  .form-foot .btn{width:100%}
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}

@@ -1,5 +1,5 @@
 const rawSiteUrl = (process.env.SITE_URL || 'https://vectisadvisory.co.nz').trim();
-const contactEmail = (process.env.CONTACT_EMAIL || '').trim();
+const turnstileSiteKey = (process.env.PUBLIC_TURNSTILE_SITE_KEY || '').trim();
 
 function normaliseSiteUrl(value: string) {
   if (!value) return undefined;
@@ -10,14 +10,9 @@ function normaliseSiteUrl(value: string) {
   return url.origin;
 }
 
-if (contactEmail && !/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}$/.test(contactEmail)) {
-  throw new Error('CONTACT_EMAIL must be a public email address without display names or line breaks.');
-}
-
 export const site = {
   name: 'Vectis',
   url: normaliseSiteUrl(rawSiteUrl),
-  contactEmail,
-  contactHref: contactEmail ? `mailto:${encodeURIComponent(contactEmail)}` : undefined,
+  turnstileSiteKey,
   description: 'Vectis helps construction sector companies gain the understanding and capability to control their future proactively.',
 };

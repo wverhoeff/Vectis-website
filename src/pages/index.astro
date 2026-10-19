@@ -15,7 +15,7 @@ const capabilities = [
     <div class="nav-pill">
       <a class="brand" href="#top" aria-label="Vectis home"><img src="/assets/vectis-wordmark.png" width="2044" height="481" alt="Vectis"/></a>
       <nav aria-label="Main navigation"><a href="#capabilities">Capabilities</a><a href="#approach">Approach</a></nav>
-      {site.contactEmail && <a class="nav-cta" href="#contact">Talk to us</a>}
+      <a class="nav-cta" href="#contact">Inquire</a>
     </div>
   </header>
   <main id="main">
@@ -71,14 +71,63 @@ const capabilities = [
       </div>
     </section>
 
-    {site.contactEmail && (
-      <section class="contact" id="contact" aria-labelledby="contact-title">
-        <div class="wrap">
-          <h2 id="contact-title" data-reveal>Talk to Vectis.</h2>
-          <a class="btn btn-primary contact-email" href={site.contactHref} data-reveal style="--d:90ms">{site.contactEmail}</a>
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contact-grid">
+        <div class="contact-intro">
+          <h2 id="contact-title" data-reveal>Let's talk about <span class="glow">what comes next.</span></h2>
+          <p data-reveal style="--d:80ms">Tell us a little about your firm and what you're looking to do with AI. We'll get back to you.</p>
         </div>
-      </section>
-    )}
+        <form class="contact-form" action="/api/contact" method="post" data-reveal style="--d:120ms">
+          <div class="field-row">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required maxlength="120"/>
+              <p class="field-error" id="e-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="200"/>
+              <p class="field-error" id="e-email" aria-live="polite"></p>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="f-company">Company <span class="optional">(optional)</span></label>
+              <input id="f-company" name="company" type="text" autocomplete="organization" maxlength="160"/>
+              <p class="field-error" id="e-company" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-phone">Phone <span class="optional">(optional)</span></label>
+              <input id="f-phone" name="phone" type="tel" autocomplete="tel" maxlength="40"/>
+              <p class="field-error" id="e-phone" aria-live="polite"></p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-topic">What are you interested in? <span class="optional">(optional)</span></label>
+            <select id="f-topic" name="topic">
+              <option value="">Choose one</option>
+              <option>Strategy and direction</option>
+              <option>Tools and implementation</option>
+              <option>Learning and adoption</option>
+              <option>Something else</option>
+            </select>
+            <p class="field-error" id="e-topic" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="f-message">How can we help?</label>
+            <textarea id="f-message" name="message" rows="5" required minlength="10" maxlength="5000"></textarea>
+            <p class="field-error" id="e-message" aria-live="polite"></p>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="f-website">Website</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"/></div>
+          {site.turnstileSiteKey && <div class="cf-turnstile" data-sitekey={site.turnstileSiteKey} data-theme="dark" data-size="flexible"></div>}
+          <div class="form-foot">
+            <button class="btn btn-primary" type="submit">Send enquiry</button>
+            <p class="privacy">We only use your details to reply to your enquiry.</p>
+          </div>
+          <p class="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
   </main>
   <footer class="site-footer">
     <div class="wrap">
@@ -91,4 +140,6 @@ const capabilities = [
     </div>
   </footer>
   <script src="../scripts/scene.js"></script>
+  <script src="../scripts/contact.js"></script>
+  {site.turnstileSiteKey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
 </Page>
